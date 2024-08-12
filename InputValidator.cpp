@@ -2,6 +2,7 @@
 #include <cctype>
 #include <regex>
 
+
 bool InputValidator::isValidName(const std::string& name) {
     if (name.empty()) return false;
     for (char c : name) {
@@ -33,4 +34,23 @@ std::regex validFileFormatPattern(
 );
 
     return std::regex_match(data, validFileFormatPattern);
+}
+
+// Check if the input string is in a valid format when 'place' is mentioned
+bool InputValidator::isValidPlaceCommand(const std::string& input) {
+    std::regex placeCommandPattern("place [A-Z][1-6] at [A-Z][0-9]");
+    std::smatch match;
+    
+    // Ensure the input contains "place" and is followed by a valid tile code and position
+    if (input.find("place") != std::string::npos) {
+        // Check if the entire input matches the place command pattern
+        if (std::regex_search(input, match, placeCommandPattern) && match.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    // Return true if "place" is not in the input (i.e., not a place command)
+    return true;
 }

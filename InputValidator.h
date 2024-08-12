@@ -13,6 +13,9 @@ public:
 
     // Validate file format is acceptable
     static bool isFileFormatValid(const std::string& data);
+
+    // Validate if place tile is correct format
+    static bool isValidPlaceCommand(const std::string& input);
 };
 
 #endif // ASSIGN2_INPUTVALIDATOR_H
