@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "Running credits test"
+chmod +x ./tests/run ./tests/credits/test && ./tests/credits/test
+echo "Running load-game test" 
+chmod +x ./tests/run ./tests/load-game/test && ./tests/load-game/test
+echo "Running new-game test"
+chmod +x ./tests/run ./tests/new-game/test && ./tests/new-game/test
+echo "Running save-game test"
+chmod +x ./tests/run ./tests/save-game/test && ./tests/save-game/test
+echo "Running game-end test"
+chmod +x ./tests/run ./tests/game-end/test && ./tests/game-end/test
+echo "Running qwirkle test"
+chmod +x ./tests/run ./tests/qwirkle/test && ./tests/qwirkle/test
+echo "Running line-validation test"
+chmod +x ./tests/run ./tests/line-validation/test && ./tests/line-validation/test; 
+echo "Running tile-colours test"
+chmod +x ./tests/run ./tests/tile-colours/test && ./tests/tile-colours/test; 

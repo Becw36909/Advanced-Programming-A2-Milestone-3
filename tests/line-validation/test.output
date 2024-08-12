@@ -1,0 +1,141 @@
+Welcome to Qwirkle!
+-------------------
+Choose version to run:
+1. Base Qwirkle
+2. Enhanced Qwirkle
+> Qwirkle Version: Base
+Menu
+1. New Game
+2. Load Game
+3. Credits
+4. Quit
+> 
+Enter the filename from which to load a game:
+> 
+Qwirkle game successfully loaded
+
+Score for ALICE: 0
+Score for BOB: 0
+   0  1  2  3  4  5  
+--------------------
+A|  |  |  |  |  |  |
+B|  |  |  |  |  |  |
+C|  |  |P1|  |  |  |
+D|  |  |  |  |  |  |
+E|  |  |  |  |  |  |
+F|  |  |  |  |  |  |
+
+Tiles in hand: B2, B1, P2, P4
+Your move ALICE: 
+Invalid move. Try again.
+   0  1  2  3  4  5  
+--------------------
+A|  |  |  |  |  |  |
+B|  |  |  |  |  |  |
+C|  |  |P1|  |  |  |
+D|  |  |  |  |  |  |
+E|  |  |  |  |  |  |
+F|  |  |  |  |  |  |
+
+Tiles in hand: B2, B1, P2, P4
+Your move ALICE: 
+
+Score for ALICE: 2
+Score for BOB: 0
+   0  1  2  3  4  5  
+--------------------
+A|  |  |  |  |  |  |
+B|  |  |  |  |  |  |
+C|  |  |P1|B1|  |  |
+D|  |  |  |  |  |  |
+E|  |  |  |  |  |  |
+F|  |  |  |  |  |  |
+
+Tiles in hand: B4, P1, B2, O1
+Your move BOB: 
+
+Score for ALICE: 2
+Score for BOB: 2
+   0  1  2  3  4  5  
+--------------------
+A|  |  |  |  |  |  |
+B|  |  |  |  |  |  |
+C|  |  |P1|B1|  |  |
+D|  |  |  |B4|  |  |
+E|  |  |  |  |  |  |
+F|  |  |  |  |  |  |
+
+Tiles in hand: B2, P2, P4
+Your move ALICE: 
+Invalid move. Try again.
+   0  1  2  3  4  5  
+--------------------
+A|  |  |  |  |  |  |
+B|  |  |  |  |  |  |
+C|  |  |P1|B1|  |  |
+D|  |  |  |B4|  |  |
+E|  |  |  |  |  |  |
+F|  |  |  |  |  |  |
+
+Tiles in hand: B2, P2, P4
+Your move ALICE: 
+
+Score for ALICE: 6
+Score for BOB: 2
+   0  1  2  3  4  5  
+--------------------
+A|  |  |  |  |  |  |
+B|  |  |  |  |  |  |
+C|  |  |P1|B1|  |  |
+D|  |  |P4|B4|  |  |
+E|  |  |  |  |  |  |
+F|  |  |  |  |  |  |
+
+Tiles in hand: P1, B2, O1
+Your move BOB: 
+Invalid move. Try again.
+   0  1  2  3  4  5  
+--------------------
+A|  |  |  |  |  |  |
+B|  |  |  |  |  |  |
+C|  |  |P1|B1|  |  |
+D|  |  |P4|B4|  |  |
+E|  |  |  |  |  |  |
+F|  |  |  |  |  |  |
+
+Tiles in hand: P1, B2, O1
+Your move BOB: 
+Invalid move. Try again.
+   0  1  2  3  4  5  
+--------------------
+A|  |  |  |  |  |  |
+B|  |  |  |  |  |  |
+C|  |  |P1|B1|  |  |
+D|  |  |P4|B4|  |  |
+E|  |  |  |  |  |  |
+F|  |  |  |  |  |  |
+
+Tiles in hand: P1, B2, O1
+Your move BOB: 
+
+Score for ALICE: 6
+Score for BOB: 5
+   0  1  2  3  4  5  
+--------------------
+A|  |  |  |  |  |  |
+B|  |  |  |  |  |  |
+C|  |  |P1|B1|O1|  |
+D|  |  |P4|B4|  |  |
+E|  |  |  |  |  |  |
+F|  |  |  |  |  |  |
+
+Tiles in hand: B2, P2
+Your move ALICE: 
+Qwirkle Version: Base
+Menu
+1. New Game
+2. Load Game
+3. Credits
+4. Quit
+> 
+Goodbye!

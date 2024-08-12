@@ -1,0 +1,10 @@
+ALICE
+0
+B6
+BOB
+0
+
+6,6
+B5@C5
+
+ALICE

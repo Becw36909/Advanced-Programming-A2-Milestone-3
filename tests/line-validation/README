@@ -1,0 +1,9 @@
+This test validates tile placement in lines of existing tiles;
+- a tile should match a neighboring tile by EITHER colour or shape but not both as this would be the same tile.
+- all tiles in a line should match by either colour or shape but no combination of both.
+- validation should check that correct matching of lines is considered in both X and Y directions where a tile intersects lines.
+
+The input sequence will attempt to place an invalid tile againt another tile (B2 and P1).
+Then it will try to place an invalid tile at an intersection for two lines (P2 at D2) and expect invalid input response.
+It will then try to incorrectly place a duplicate tile in one of the rows (P1 at C4).
+It then tries to incorrectly match B2 with B1 where this would normally work if B1 wasn't already in a match sequence with P1.

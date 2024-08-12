@@ -1,0 +1,8 @@
+#!/bin/bash
+
+./qwirkle.exe e2etest < ./tests/game-end/test.input > ./qwirkle.out
+if diff -w ./tests/game-end/test.output ./qwirkle.out; then
+    echo "Test passed"
+else
+    echo "Test failed"
+fi

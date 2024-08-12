@@ -1,0 +1,37 @@
+Welcome to Qwirkle!
+-------------------
+Choose version to run:
+1. Base Qwirkle
+2. Enhanced Qwirkle
+> Qwirkle Version: Base
+Menu
+1. New Game
+2. Load Game
+3. Credits
+4. Quit
+> 
+Enter the filename from which to load a game:
+> 
+Qwirkle game successfully loaded
+
+Score for ALICE: 0
+Score for BOB: 0
+   0  1  2  3  4  5  
+--------------------
+A|R1|  |  |  |  |  |
+B|  |G2|  |  |  |  |
+C|  |  |B3|  |  |  |
+D|  |  |  |Y4|  |  |
+E|  |  |  |  |  |  |
+F|  |  |  |  |  |  |
+
+Tiles in hand: R1, G2
+Your move ALICE: 
+Qwirkle Version: Base
+Menu
+1. New Game
+2. Load Game
+3. Credits
+4. Quit
+> 
+Goodbye!

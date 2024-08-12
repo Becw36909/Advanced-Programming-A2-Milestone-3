@@ -1,0 +1,43 @@
+Welcome to Qwirkle!
+-------------------
+Choose version to run:
+1. Base Qwirkle
+2. Enhanced Qwirkle
+> Qwirkle Version: Enhanced
+Menu
+1. New Game
+2. Load Game
+3. Credits
+4. Quit
+> 
+Enter the filename from which to load a game:
+> 
+Qwirkle game successfully loaded
+
+Score for ABBY: 3
+Score for BILL: 1
+   0  1  2  3  4  5  6  7  8  9 10 11 
+--------------------------------------
+A|[31mR1[0m|  |  |  |  |  |  |  |  |  |  |  |
+B|  |[32mG2[0m|  |  |  |  |  |  |  |  |  |  |
+C|  |  |[34mB3[0m|  |  |  |  |  |  |  |  |  |
+D|  |  |  |[33mY4[0m|  |  |  |  |  |  |  |  |
+E|  |  |  |  |  |  |  |  |  |  |  |  |
+F|  |  |  |  |  |  |  |  |  |  |  |  |
+G|  |  |  |  |  |  |  |  |  |  |  |  |
+H|  |  |  |  |  |  |  |  |  |  |  |  |
+I|  |  |  |  |  |  |  |  |  |  |  |  |
+J|  |  |  |  |  |  |  |  |  |  |  |  |
+K|  |  |  |  |  |  |  |  |  |  |  |  |
+L|  |  |  |  |  |  |  |  |  |  |  |  |
+
+Tiles in hand: R1, G2
+Your move ABBY: 
+Qwirkle Version: Enhanced
+Menu
+1. New Game
+2. Load Game
+3. Credits
+4. Quit
+> 
+Goodbye!
