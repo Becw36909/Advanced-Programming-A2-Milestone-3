@@ -34,6 +34,11 @@ void printScores(Player *player1, Player *player2, TileBag *tileBag, GameBoard* 
 std::string handleInput(bool &quit);
 bool chooseVersion();
 void handleEnhancedPlayerTurn(Player* currentPlayer, Player* otherPlayer, TileBag* tileBag, GameBoard* gameBoard, bool& quit, bool enhanced);
+bool handleSave(Player* player, Player* opponent, TileBag* tileBag, GameBoard* gameBoard, bool& quit);
+bool handleReplace(Player* player, TileBag* tileBag, const std::string& tileToReplace);
+bool handlePlaceCommand(Player* player, TileBag* tileBag, GameBoard* gameBoard, const std::string& playerMove);
+bool validateMove(Player* player, GameBoard* gameBoard, const std::string& move);
+
 
 int main(int argc, char **argv)
 {
@@ -55,19 +60,6 @@ int main(int argc, char **argv)
   displayWelcomeMessage();
 
   bool enhanced = chooseVersion();
-
-    //  std::cout << "Choose version to run:" << std::endl;
-    // std::cout << "1. Base Qwirkle" << std::endl;
-    // std::cout << "2. Enhanced Qwirkle" << std::endl;
-    // std::cout << "> ";
-    
-    // std::string versionChoice;
-    // std::getline(std::cin, versionChoice);
-
-    //     bool enhanced = false;
-    // if (versionChoice == "2") {
-    //     enhanced = true;
-    // }
 
   while (!quit)
   {
@@ -333,169 +325,359 @@ void playTurn(Player *player, Player *opponent, TileBag *tileBag,
   }
 }
 
-void handleEnhancedPlayerTurn(Player *player, Player *opponent,
-                              TileBag *tileBag, GameBoard *gameBoard,
-                              bool &quit, bool enhanced) {
-  bool validInput = false;
+// void handleEnhancedPlayerTurn(Player *player, Player *opponent,
+//                               TileBag *tileBag, GameBoard *gameBoard,
+//                               bool &quit, bool enhanced) {
+//   bool validInput = false;
 
-  while (!validInput && !quit) {
-    std::cout << gameBoard->displayBoard(enhanced) << std::endl;
-    std::cout << "Tiles in hand: " << player->getHand()->toString()
-              << std::endl;
-    std::cout << "Your move " << player->getName() << ": ";
-    std::string playerMove = handleInput(quit);
+//   while (!validInput && !quit) {
+//     std::cout << gameBoard->displayBoard(enhanced) << std::endl;
+//     std::cout << "Tiles in hand: " << player->getHand()->toString()
+//               << std::endl;
+//     std::cout << "Your move " << player->getName() << ": ";
+//     std::string playerMove = handleInput(quit);
 
-    if (playerMove == "quit" || quit) {
-      quit = true;
-      validInput = true;  // Quit is a valid input
-    } else if (playerMove == "save") {
-      std::cout << "Enter filename to save: ";
-      std::string filename = handleInput(quit);
+//     if (playerMove == "quit" || quit) {
+//       quit = true;
+//       validInput = true;  // Quit is a valid input
+//     } else if (playerMove == "save") {
+//       std::cout << "Enter filename to save: ";
+//       std::string filename = handleInput(quit);
 
-      FileHandler fileHandler;
-      fileHandler.saveGame(filename, player, opponent, tileBag, gameBoard,
-                           player);
-      std::cout << "Game saved to " << filename << std::endl;
-      validInput = true;  // Save action is a valid input
+//       FileHandler fileHandler;
+//       fileHandler.saveGame(filename, player, opponent, tileBag, gameBoard,
+//                            player);
+//       std::cout << "Game saved to " << filename << std::endl;
+//       validInput = true;  // Save action is a valid input
 
-    } else if (playerMove.substr(0, 7) == "replace") {
-      // Check if there's a tile specified after 'replace'
-      if (playerMove.length() > 7) {
-        std::string tileToReplace = playerMove.substr(8);
+//     } else if (playerMove.substr(0, 7) == "replace") {
+//       // Check if there's a tile specified after 'replace'
+//       if (playerMove.length() > 7) {
+//         std::string tileToReplace = playerMove.substr(8);
 
-        if (tileToReplace.empty()) {
-          std::cout << "Invalid input. Please specify a tile to replace. Use "
-                       "'replace <tile>' format."
-                    << std::endl;
-          // Ensure tile has a color and a shape
-        } else if (tileToReplace.size() == 2) {
-          char colour = tileToReplace[0];
-          int shape = tileToReplace[1] - '0';
-          Tile *tile = new Tile(colour, shape);
-          Tile *removedTile = player->removeTileFromHand(tile);
+//         if (tileToReplace.empty()) {
+//           std::cout << "Invalid input. Please specify a tile to replace. Use "
+//                        "'replace <tile>' format."
+//                     << std::endl;
+//           // Ensure tile has a color and a shape
+//         } else if (tileToReplace.size() == 2) {
+//           char colour = tileToReplace[0];
+//           int shape = tileToReplace[1] - '0';
+//           Tile *tile = new Tile(colour, shape);
+//           Tile *removedTile = player->removeTileFromHand(tile);
 
-          if (removedTile != nullptr) {
-            std::cout << removedTile->print()
-                      << " tile removed from hand and added to the bag."
-                      << std::endl;
-            delete removedTile;
-            tileBag->addTile(tile);
-            Tile *newTile = tileBag->drawTile();
+//           if (removedTile != nullptr) {
+//             std::cout << removedTile->print()
+//                       << " tile removed from hand and added to the bag."
+//                       << std::endl;
+//             delete removedTile;
+//             tileBag->addTile(tile);
+//             Tile *newTile = tileBag->drawTile();
 
-            if (newTile != nullptr) {
-              player->addTileToHand(newTile);
-              std::cout << newTile->print()
-                        << " tile drawn and added to your hand." << std::endl;
-            } else {
-              std::cout << "No tiles left to draw from the tile bag."
-                        << std::endl;
-            }
-            validInput = true;
-          } else {
-            std::cout << "You don't have that tile in your hand." << std::endl;
-          }
+//             if (newTile != nullptr) {
+//               player->addTileToHand(newTile);
+//               std::cout << newTile->print()
+//                         << " tile drawn and added to your hand." << std::endl;
+//             } else {
+//               std::cout << "No tiles left to draw from the tile bag."
+//                         << std::endl;
+//             }
+//             validInput = true;
+//           } else {
+//             std::cout << "You don't have that tile in your hand." << std::endl;
+//           }
+//         } else {
+//           std::cout << "Invalid tile format. Use <colour><shape>." << std::endl;
+//         }
+//       } else {
+//         std::cout << "Invalid input. Please specify a tile to replace. Use "
+//                      "'replace <tile>' format."
+//                   << std::endl;
+//       }
+
+//     } else if (playerMove.find("place") != std::string::npos) {
+//       std::stringstream stringstream(playerMove);
+//       std::string extractedWord;
+//       std::vector<std::string> moveBreakdown;
+//       bool allMovesValid = true;
+
+//       // Split the input and validate each command
+//       while (stringstream >> extractedWord) {
+//         moveBreakdown.push_back(extractedWord);
+
+//         // When we have a complete "place <tile> at <position>" command
+//         if (moveBreakdown.size() == 4 && moveBreakdown[0] == "place" &&
+//             moveBreakdown[2] == "at") {
+//           std::string moveCommand = moveBreakdown[0] + " " + moveBreakdown[1] +
+//                                     " " + moveBreakdown[2] + " " +
+//                                     moveBreakdown[3];
+
+//           if (!InputValidator::isValidPlaceCommand(moveCommand)) {
+//             allMovesValid = false;
+//           }
+//           // Prepare to process the next move
+//           moveBreakdown.clear();
+//         }
+//       }
+//       // Ensure all moves were valid and the breakdown was processed
+//       // completely
+//       if (allMovesValid && moveBreakdown.empty()) {
+//         // Execute the valid moves
+//         stringstream.clear();
+//         stringstream.str(playerMove);
+
+//         moveBreakdown.clear();
+//         while (stringstream >> extractedWord) {
+//           moveBreakdown.push_back(extractedWord);
+
+//           if (moveBreakdown.size() == 4 && moveBreakdown[0] == "place" &&
+//               moveBreakdown[2] == "at") {
+//             char tileColour = moveBreakdown[1][0];
+//             int tileShape = moveBreakdown[1][1] - '0';
+//             char rowChar = moveBreakdown[3][0];
+//             int col = std::stoi(moveBreakdown[3].substr(1));
+
+//             int row = rowChar - 'A';
+//             Tile *tile = new Tile(tileColour, tileShape);
+
+//             if (player->containsTile(tile)) {
+//               if (Rules::validateMove(gameBoard, tile, row, col)) {
+//                 gameBoard->placeTile(row, col, tile);
+//                 Tile *removedTile = player->removeTileFromHand(tile);
+//                 if (removedTile != nullptr) {
+//                   delete removedTile;
+//                   Tile *newTile = tileBag->drawTile();
+//                   if (newTile != nullptr) {
+//                     player->addTileToHand(newTile);
+//                   }
+//                   int score = Rules::calculateScore(gameBoard, row, col);
+//                   player->setScore(player->getScore() + score);
+//                   if (score > 6) {
+//                     std::cout << "QWIRKLE!!!" << std::endl;
+//                   }
+//                 } else {
+//                   std::cout << "Error: Failed to remove tile from hand."
+//                             << std::endl;
+//                 }
+//               } else {
+//                 std::cout << "Invalid move at " << rowChar << col
+//                           << ". Try again." << std::endl;
+//               }
+//             } else {
+//               std::cout << "You don't have that tile in your hand: "
+//                         << tile->print() << std::endl;
+//             }
+//             // Prepare to process the next move
+//             moveBreakdown.clear();
+//           }
+//         }
+//         // All commands were valid and executed
+//         validInput = true;
+//       } else {
+//         // Print the error message if any command was invalid
+//         std::cout << "Invalid move format. Use 'place <tile> at <position>' "
+//                      "for single tile OR 'place <tile> at <position> place "
+//                      "<tile> at <position>' and so on for multi-tile placement."
+//                   << std::endl;
+//       }
+//     } else {
+//       // Handle any other input that's not recognized
+//       std::cout << "Invalid input. Please enter a valid command ('place <tile> "
+//                    "at <position>', 'replace <tile>', 'save', or 'quit')."
+//                 << std::endl;
+//     }
+//   }
+// }
+
+
+void handleEnhancedPlayerTurn(Player* player, Player* opponent, TileBag* tileBag,
+                              GameBoard* gameBoard, bool& quit, bool enhanced) {
+    bool validInput = false;
+
+    while (!quit) {
+        std::cout << gameBoard->displayBoard(enhanced) << std::endl;
+        std::cout << "Tiles in hand: " << player->getHand()->toString() << std::endl;
+        std::cout << "Your move " << player->getName() << ": ";
+        std::string playerMove = handleInput(quit);
+
+        if (quit || playerMove == "quit") {
+            quit = true;
+            return;
+        } else if (playerMove.substr(0, 4) == "save") {
+            handleSave(player, opponent, tileBag, gameBoard, quit);
+            // Continue the loop without exiting, so the current player can continue their turn
+        } else if (playerMove.substr(0, 7) == "replace") {
+            std::string tileToReplace = playerMove.substr(8);
+            validInput = handleReplace(player, tileBag, tileToReplace);
+        } else if (playerMove.find("place") != std::string::npos) {
+            validInput = handlePlaceCommand(player, tileBag, gameBoard, playerMove);
         } else {
-          std::cout << "Invalid tile format. Use <colour><shape>." << std::endl;
+            std::cout << "Invalid input. Please enter a valid command ('place <tile> at <position>', 'replace <tile>', 'save', or 'quit')." << std::endl;
         }
-      } else {
-        std::cout << "Invalid input. Please specify a tile to replace. Use "
-                     "'replace <tile>' format."
-                  << std::endl;
-      }
 
-    } else if (playerMove.find("place") != std::string::npos) {
-      std::stringstream stringstream(playerMove);
-      std::string extractedWord;
-      std::vector<std::string> moveBreakdown;
-      bool allMovesValid = true;
+        if (validInput) {
+            // Valid move has been made, exit the loop to end the turn
+            return;
+        }
+    }
+}
 
-      // Split the input and validate each command
-      while (stringstream >> extractedWord) {
+bool validateMove(Player* player, GameBoard* gameBoard, const std::string& move) {
+    std::stringstream stringstream(move);
+    std::string extractedWord;
+    std::vector<std::string> moveBreakdown;
+
+    while (stringstream >> extractedWord) {
         moveBreakdown.push_back(extractedWord);
 
-        // When we have a complete "place <tile> at <position>" command
-        if (moveBreakdown.size() == 4 && moveBreakdown[0] == "place" &&
-            moveBreakdown[2] == "at") {
-          std::string moveCommand = moveBreakdown[0] + " " + moveBreakdown[1] +
-                                    " " + moveBreakdown[2] + " " +
-                                    moveBreakdown[3];
-
-          if (!InputValidator::isValidPlaceCommand(moveCommand)) {
-            allMovesValid = false;
-          }
-          // Prepare to process the next move
-          moveBreakdown.clear();
-        }
-      }
-      // Ensure all moves were valid and the breakdown was processed
-      // completely
-      if (allMovesValid && moveBreakdown.empty()) {
-        // Execute the valid moves
-        stringstream.clear();
-        stringstream.str(playerMove);
-
-        moveBreakdown.clear();
-        while (stringstream >> extractedWord) {
-          moveBreakdown.push_back(extractedWord);
-
-          if (moveBreakdown.size() == 4 && moveBreakdown[0] == "place" &&
-              moveBreakdown[2] == "at") {
+        if (moveBreakdown.size() == 4 && moveBreakdown[0] == "place" && moveBreakdown[2] == "at") {
             char tileColour = moveBreakdown[1][0];
             int tileShape = moveBreakdown[1][1] - '0';
             char rowChar = moveBreakdown[3][0];
             int col = std::stoi(moveBreakdown[3].substr(1));
 
             int row = rowChar - 'A';
-            Tile *tile = new Tile(tileColour, tileShape);
+            Tile* tile = new Tile(tileColour, tileShape);
 
             if (player->containsTile(tile)) {
-              if (Rules::validateMove(gameBoard, tile, row, col)) {
-                gameBoard->placeTile(row, col, tile);
-                Tile *removedTile = player->removeTileFromHand(tile);
-                if (removedTile != nullptr) {
-                  delete removedTile;
-                  Tile *newTile = tileBag->drawTile();
-                  if (newTile != nullptr) {
-                    player->addTileToHand(newTile);
-                  }
-                  int score = Rules::calculateScore(gameBoard, row, col);
-                  player->setScore(player->getScore() + score);
-                  if (score > 6) {
-                    std::cout << "QWIRKLE!!!" << std::endl;
-                  }
+                if (Rules::validateMove(gameBoard, tile, row, col)) {
+                    delete tile;
+                    return true;
                 } else {
-                  std::cout << "Error: Failed to remove tile from hand."
-                            << std::endl;
+                    delete tile;
+                    std::cout << "Invalid move at " << rowChar << col << ". Move rejected." << std::endl;
+                    return false;
                 }
-              } else {
-                std::cout << "Invalid move at " << rowChar << col
-                          << ". Try again." << std::endl;
-              }
             } else {
-              std::cout << "You don't have that tile in your hand: "
-                        << tile->print() << std::endl;
+                delete tile;
+                std::cout << "You don't have that tile in your hand: " << tile->print() << std::endl;
+                return false;
             }
-            // Prepare to process the next move
-            moveBreakdown.clear();
-          }
         }
-        // All commands were valid and executed
-        validInput = true;
-      } else {
-        // Print the error message if any command was invalid
-        std::cout << "Invalid move format. Use 'place <tile> at <position>' "
-                     "for single tile OR 'place <tile> at <position> place "
-                     "<tile> at <position>' and so on for multi-tile placement."
-                  << std::endl;
-      }
-    } else {
-      // Handle any other input that's not recognized
-      std::cout << "Invalid input. Please enter a valid command ('place <tile> "
-                   "at <position>', 'replace <tile>', 'save', or 'quit')."
-                << std::endl;
     }
-  }
+    std::cout << "Invalid move format. Use 'place <tile> at <position>'." << std::endl;
+    return false;
 }
+
+
+bool handleSave(Player* currentPlayer, Player* otherPlayer, TileBag* tileBag, GameBoard* gameBoard, bool& quit) {
+    std::cout << "Enter filename to save: ";
+    std::string filename = handleInput(quit);
+
+    FileHandler fileHandler;
+    fileHandler.saveGame(filename, currentPlayer, otherPlayer, tileBag, gameBoard, currentPlayer);
+    std::cout << "Game successfully saved to " << filename << std::endl;
+    return true;  // Save action is a valid input, but doesn't change the turn
+}
+
+
+bool handleReplace(Player* player, TileBag* tileBag, const std::string& tileToReplace) {
+    if (tileToReplace.empty()) {
+        std::cout << "Invalid input. Please specify a tile to replace. Use 'replace <tile>' format." << std::endl;
+        return false;
+    }
+
+    if (tileToReplace.size() == 2) {
+        char colour = tileToReplace[0];
+        int shape = tileToReplace[1] - '0';
+        Tile* tile = new Tile(colour, shape);
+        Tile* removedTile = player->removeTileFromHand(tile);
+
+        if (removedTile != nullptr) {
+            std::cout << removedTile->print() << " tile removed from hand and added to the bag." << std::endl;
+            delete removedTile;
+            tileBag->addTile(tile);
+            Tile* newTile = tileBag->drawTile();
+            if (newTile != nullptr) {
+                player->addTileToHand(newTile);
+                std::cout << newTile->print() << " tile drawn and added to your hand." << std::endl;
+            } else {
+                std::cout << "No tiles left to draw from the tile bag." << std::endl;
+            }
+            return true;
+        } else {
+            std::cout << "You don't have that tile in your hand." << std::endl;
+        }
+    } else {
+        std::cout << "Invalid tile format. Use <colour><shape>." << std::endl;
+    }
+    return false;
+}
+
+bool handlePlaceCommand(Player* player, TileBag* tileBag, GameBoard* gameBoard, const std::string& playerMove) {
+    std::stringstream stringstream(playerMove);
+    std::string extractedWord;
+    std::vector<std::string> moveBreakdown;
+    bool allMovesValid = true;
+
+    while (stringstream >> extractedWord) {
+        moveBreakdown.push_back(extractedWord);
+
+        if (moveBreakdown.size() == 4 && moveBreakdown[0] == "place" && moveBreakdown[2] == "at") {
+            std::string moveCommand = moveBreakdown[0] + " " + moveBreakdown[1] + " " + moveBreakdown[2] + " " + moveBreakdown[3];
+
+            if (!InputValidator::isValidPlaceCommand(moveCommand)) {
+                allMovesValid = false;
+            }
+
+            moveBreakdown.clear();
+        }
+    }
+
+    if (allMovesValid && moveBreakdown.empty()) {
+        stringstream.clear();
+        stringstream.str(playerMove);
+        moveBreakdown.clear();
+
+        while (stringstream >> extractedWord) {
+            moveBreakdown.push_back(extractedWord);
+
+            if (moveBreakdown.size() == 4 && moveBreakdown[0] == "place" && moveBreakdown[2] == "at") {
+                char tileColour = moveBreakdown[1][0];
+                int tileShape = moveBreakdown[1][1] - '0';
+                char rowChar = moveBreakdown[3][0];
+                int col = std::stoi(moveBreakdown[3].substr(1));
+
+                int row = rowChar - 'A';
+                Tile* tile = new Tile(tileColour, tileShape);
+
+                if (player->containsTile(tile)) {
+                    if (Rules::validateMove(gameBoard, tile, row, col)) {
+                        gameBoard->placeTile(row, col, tile);
+                        Tile* removedTile = player->removeTileFromHand(tile);
+                        if (removedTile != nullptr) {
+                            delete removedTile;
+                            Tile* newTile = tileBag->drawTile();
+                            if (newTile != nullptr) {
+                                player->addTileToHand(newTile);
+                            }
+                            int score = Rules::calculateScore(gameBoard, row, col);
+                            player->setScore(player->getScore() + score);
+                            if (score > 6) {
+                                std::cout << "QWIRKLE!!!" << std::endl;
+                            }
+                        } else {
+                            std::cout << "Error: Failed to remove tile from hand." << std::endl;
+                            return false;
+                        }
+                    } else {
+                        std::cout << "Invalid move at " << rowChar << col << ". Try again." << std::endl;
+                        return false;
+                    }
+                } else {
+                    std::cout << "You don't have that tile in your hand: " << tile->print() << std::endl;
+                    return false;
+                }
+                moveBreakdown.clear();
+            }
+        }
+        return true;
+    } else {
+        std::cout << "Invalid move format. Use 'place <tile> at <position>' for single tile OR 'place <tile> at <position> place <tile> at <position>' and so on for multi-tile placement." << std::endl;
+    }
+    return false;
+}
+
 
 void gameLoop(Player *player1, Player *player2, TileBag *tileBag,
               GameBoard *gameBoard, bool enhanced) {
