@@ -21,6 +21,8 @@ std::ostream& operator<<(std::ostream& os, const Tile& tile) {
 
 std::string Tile::print() {
     return colour + std::to_string(shape);
+            // return std::string(1, colour) + std::to_string(shape);
+
 }
 
 // This function checks if two Tile objects are equal.
