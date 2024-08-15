@@ -11,7 +11,7 @@ public:
     static bool validateMove(GameBoard* board, Tile* tile, int x, int y);
 
     // Validate multiple moves
-    bool validateMoveEnhanced(GameBoard* board, const std::vector<Tile*>& tiles, const std::vector<std::pair<int, int>>& positions);
+    static bool validateMoveEnhanced(GameBoard* board, const std::vector<Tile*>& tiles, const std::vector<std::pair<int, int>>& positions);
 
     // Calculate the score of a move
     static int calculateScore(GameBoard* board, int x, int y);
