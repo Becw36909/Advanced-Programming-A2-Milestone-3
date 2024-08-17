@@ -21,6 +21,8 @@ class Tests {
 
   static void tileBagConstructorOverloadTest() {
     std::cout << "#tileBagConstructorOverloadTest" << std::endl;
+    bool enhanced = false;
+
     // given
     std::vector<Tile*> tileVector =
         std::vector<Tile*>({new Tile(RED, CIRCLE), new Tile(RED, STAR_4)});
@@ -29,7 +31,7 @@ class Tests {
     TileBag* tilebag = new TileBag(tileVector);
 
     // then
-    std::string tileString = tilebag->getTiles()->toString();
+    std::string tileString = tilebag->getTiles()->toString(enhanced);
     std::cout << "Tilebag instantiated with tiles: " << tileString << std::endl;
 
     assert_equality("R1, R2", tileString);
@@ -37,15 +39,16 @@ class Tests {
 
   static void tileBagShuffleTest() {
     std::cout << "#tileShuffleTest" << std::endl;
+    bool enhanced = false;
     // given
     TileBag* tilebag = new TileBag();
     LinkedList* tiles = tilebag->getTiles();
-    std::string tileString = tiles->toString();
+    std::string tileString = tiles->toString(enhanced);
     int randSeed = (unsigned int)time(NULL);
 
     // when
     tilebag->shuffle(randSeed);
-    std::string shuffledTileString = tiles->toString();
+    std::string shuffledTileString = tiles->toString(enhanced);
 
     // then
     std::cout << "Original: " << tileString << std::endl;
@@ -150,10 +153,10 @@ class Tests {
     std::string expectedOutput =
         "   0  1  2  3 \n"
         "--------------\n"
-        "A|\033[31mR1\033[0m|  |  |  |\n"  // Red color
-        "B|  |\033[32mG2\033[0m|  |  |\n"  // Green color
-        "C|  |  |\033[34mB3\033[0m|  |\n"  // Blue color
-        "D|  |  |  |\033[33mY4\033[0m|\n"; // Yellow color
+        "A|\033[31mR1\033[0m|  |  |  |\n"   // Red color
+        "B|  |\033[32mG2\033[0m|  |  |\n"   // Green color
+        "C|  |  |\033[34mB3\033[0m|  |\n"   // Blue color
+        "D|  |  |  |\033[33mY4\033[0m|\n";  // Yellow color
 
     // Then
     assert_equality(expectedOutput, enhancedBoardOutput);
@@ -177,24 +180,24 @@ class Tests {
     std::vector<std::string> moveBreakdown;
 
     while (stringstream >> extractedWord) {
-        moveBreakdown.push_back(extractedWord);
+      moveBreakdown.push_back(extractedWord);
 
-        // Check if we have a full move instruction
-        if (moveBreakdown.size() == 4 && moveBreakdown[0] == "place" &&
-            moveBreakdown[2] == "at") {
-            
-            // Extract tile and position
-            std::string tileCode = moveBreakdown[1];
-            char row = moveBreakdown[3][0];  // Extract row (A, B, C, etc.)
-            int col = std::stoi(moveBreakdown[3].substr(1));  // Extract column (1, 2, 3, etc.)
+      // Check if we have a full move instruction
+      if (moveBreakdown.size() == 4 && moveBreakdown[0] == "place" &&
+          moveBreakdown[2] == "at") {
+        // Extract tile and position
+        std::string tileCode = moveBreakdown[1];
+        char row = moveBreakdown[3][0];  // Extract row (A, B, C, etc.)
+        int col = std::stoi(
+            moveBreakdown[3].substr(1));  // Extract column (1, 2, 3, etc.)
 
-            // Place tile on the board
-            Tile* tile = new Tile(tileCode[0], std::stoi(tileCode.substr(1)));
-            board.placeTile(row - 'A', col - 1, tile);
+        // Place tile on the board
+        Tile* tile = new Tile(tileCode[0], std::stoi(tileCode.substr(1)));
+        board.placeTile(row - 'A', col - 1, tile);
 
-            // Clear to process the next move
-            moveBreakdown.clear();
-        }
+        // Clear to process the next move
+        moveBreakdown.clear();
+      }
     }
 
     // Then
@@ -208,8 +211,8 @@ class Tests {
         "E|  |  |  |  |  |  |\n"
         "F|  |  |  |  |  |  |\n";
 
-    std::string actualBoardOutput = board.displayBoard(false);  // false for base mode
+    std::string actualBoardOutput =
+        board.displayBoard(false);  // false for base mode
     assert_equality(expectedBoardOutput, actualBoardOutput);
-}
-
+  }
 };

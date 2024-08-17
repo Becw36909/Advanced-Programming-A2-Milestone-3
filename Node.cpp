@@ -4,9 +4,7 @@
 Node::Node(Tile* tile, Node* next) : tile(tile), next(next) {}
 
 // Destructor
-Node::~Node() {
-    delete tile;
-}
+Node::~Node() { delete tile; }
 
 // Copy constructor
 Node::Node(const Node& other)
@@ -41,19 +39,11 @@ Node& Node::operator=(Node&& other) {
 }
 
 // Getters
-Tile* Node::getTile() const {
-    return tile;
-}
+Tile* Node::getTile() const { return tile; }
 
-Node* Node::getNext() const {
-    return next;
-}
+Node* Node::getNext() const { return next; }
 
 // Setters
-void Node::setTile(Tile* tile) {
-    this->tile = tile;
-}
+void Node::setTile(Tile* tile) { this->tile = tile; }
 
-void Node::setNext(Node* next) {
-    this->next = next;
-}
+void Node::setNext(Node* next) { this->next = next; }

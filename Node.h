@@ -4,31 +4,31 @@
 #include "Tile.h"
 
 class Node {
-public:
-    Node(Tile* tile, Node* next = nullptr);
-    ~Node();
+ public:
+  Node(Tile* tile, Node* next = nullptr);
+  ~Node();
 
-    // Copy constructor
-    Node(const Node& other);
+  // Copy constructor
+  Node(const Node& other);
 
-    // Copy assignment operator
-    Node& operator=(const Node& other);
+  // Copy assignment operator
+  Node& operator=(const Node& other);
 
-    // Move constructor
-    Node(Node&& other);
+  // Move constructor
+  Node(Node&& other);
 
-    // Move assignment operator
-    Node& operator=(Node&& other);
+  // Move assignment operator
+  Node& operator=(Node&& other);
 
-    Tile* getTile() const;
-    Node* getNext() const;
+  Tile* getTile() const;
+  Node* getNext() const;
 
-    void setTile(Tile* tile);
-    void setNext(Node* next);
+  void setTile(Tile* tile);
+  void setNext(Node* next);
 
-private:
-    Tile* tile;
-    Node* next;
+ private:
+  Tile* tile;
+  Node* next;
 };
 
-#endif // ASSIGN2_NODE_H
+#endif  // ASSIGN2_NODE_H

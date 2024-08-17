@@ -22,8 +22,7 @@ class LinkedList {
   Node* getHead() const;
   int getLength() const;
   bool isEmpty() const;
-  // std::string toString();
-  std::string toString() const;
+  std::string toString(bool enhanced) const;
 
   Tile* get(int index) const;
   void deleteFront();
@@ -37,4 +36,4 @@ class LinkedList {
   int size;
 };
 
-#endif // ASSIGN2_LINKEDLIST_H
+#endif  // ASSIGN2_LINKEDLIST_H

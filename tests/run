@@ -16,3 +16,5 @@ echo "Running line-validation test"
 chmod +x ./tests/run ./tests/line-validation/test && ./tests/line-validation/test; 
 echo "Running tile-colours test"
 chmod +x ./tests/run ./tests/tile-colours/test && ./tests/tile-colours/test; 
+echo "Running multi-tile-play test"
+chmod +x ./tests/run ./tests/multi-tile-play/test && ./tests/multi-tile-play/test; 

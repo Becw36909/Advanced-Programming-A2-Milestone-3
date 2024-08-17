@@ -1,12 +1,11 @@
 #include "LinkedList.h"
+
+#include <iostream>  // for debug
 #include <sstream>
-#include <iostream> // for debug
 
 LinkedList::LinkedList() : head(nullptr), tail(nullptr), size(0) {}
 
-LinkedList::~LinkedList() {
-    clear();
-}
+LinkedList::~LinkedList() { clear(); }
 
 // Copy constructor
 LinkedList::LinkedList(const LinkedList& other)
@@ -43,7 +42,7 @@ LinkedList::LinkedList(LinkedList&& other)
 LinkedList& LinkedList::operator=(LinkedList&& other) {
   if (this != &other) {
     // Clean up the current state
-    clear();  
+    clear();
     head = other.head;
     tail = other.tail;
     size = other.size;
@@ -55,147 +54,158 @@ LinkedList& LinkedList::operator=(LinkedList&& other) {
 }
 
 void LinkedList::addBack(Tile* tile) {
-    Node* newNode = new Node(tile);
-    newNode->setNext(nullptr);
-    if (head == nullptr) {
-        head = newNode;
-        tail = newNode;
-    } else {
-        tail->setNext(newNode);
-        tail = newNode;
-    }
-    size++;
+  Node* newNode = new Node(tile);
+  newNode->setNext(nullptr);
+  if (head == nullptr) {
+    head = newNode;
+    tail = newNode;
+  } else {
+    tail->setNext(newNode);
+    tail = newNode;
+  }
+  size++;
 }
 
 void LinkedList::addFront(Tile* tile) {
-    Node* newNode = new Node(tile);
-    newNode->setNext(head);
-    head = newNode;
-    if (tail == nullptr) {
-        tail = newNode;
-    }
-    size++;
+  Node* newNode = new Node(tile);
+  newNode->setNext(head);
+  head = newNode;
+  if (tail == nullptr) {
+    tail = newNode;
+  }
+  size++;
 }
 
 Tile* LinkedList::remove(Tile* tile) {
-    Node* current = head;
-    Node* previous = nullptr;
+  Node* current = head;
+  Node* previous = nullptr;
 
-    while (current != nullptr && *(current->getTile()) != *tile) {
-        previous = current;
-        current = current->getNext();
-    }
+  while (current != nullptr && *(current->getTile()) != *tile) {
+    previous = current;
+    current = current->getNext();
+  }
 
-    if (current == nullptr) {
-        return nullptr;
-    }
+  if (current == nullptr) {
+    return nullptr;
+  }
 
-    if (previous == nullptr) {
-        head = current->getNext();
-    } else {
-        previous->setNext(current->getNext());
-    }
+  if (previous == nullptr) {
+    head = current->getNext();
+  } else {
+    previous->setNext(current->getNext());
+  }
 
-    if (current == tail) {
-        tail = previous;
-    }
+  if (current == tail) {
+    tail = previous;
+  }
 
-    Tile* removedTile = current->getTile();
-    current->setTile(nullptr);
-    delete current;
+  Tile* removedTile = current->getTile();
+  current->setTile(nullptr);
+  delete current;
 
-    size--;
+  size--;
 
-    return removedTile;
+  return removedTile;
 }
 
 Tile* LinkedList::removeFront() {
-    if (head == nullptr) {
-        return nullptr;
-    }
+  if (head == nullptr) {
+    return nullptr;
+  }
 
-    Node* oldHead = head;
-    head = head->getNext();
-    if (head == nullptr) {
-        tail = nullptr;
-    }
+  Node* oldHead = head;
+  head = head->getNext();
+  if (head == nullptr) {
+    tail = nullptr;
+  }
 
-    Tile* removedTile = oldHead->getTile();
-    oldHead->setTile(nullptr);
-    delete oldHead;
+  Tile* removedTile = oldHead->getTile();
+  oldHead->setTile(nullptr);
+  delete oldHead;
 
-    size--;
+  size--;
 
-    return removedTile;
+  return removedTile;
 }
 
 Tile* LinkedList::removeEnd() {
-    if (head == nullptr) {
+  if (head == nullptr) {
+    throw std::underflow_error("List is empty");
+    // return nullptr;
+  }
 
-        throw std::underflow_error("List is empty");
-        // return nullptr;
-    }
-
-    if (head == tail) {
-        Tile* removedTile = head->getTile();
-        delete head;
-        head = nullptr;
-        tail = nullptr;
-        size--;
-        return removedTile;
-    }
-
-    Node* current = head;
-    while (current->getNext() != tail) {
-        current = current->getNext();
-    }
-
-    Tile* removedTile = tail->getTile();
-    delete tail;
-    tail = current;
-    tail->setNext(nullptr);
-
+  if (head == tail) {
+    Tile* removedTile = head->getTile();
+    delete head;
+    head = nullptr;
+    tail = nullptr;
     size--;
-
     return removedTile;
+  }
+
+  Node* current = head;
+  while (current->getNext() != tail) {
+    current = current->getNext();
+  }
+
+  Tile* removedTile = tail->getTile();
+  delete tail;
+  tail = current;
+  tail->setNext(nullptr);
+
+  size--;
+
+  return removedTile;
 }
 
 void LinkedList::clear() {
-    Node* current = head;
-    while (current != nullptr) {
-        Node* next = current->getNext();
-        delete current;
-        current = next;
+  Node* current = head;
+  while (current != nullptr) {
+    Node* next = current->getNext();
+    delete current;
+    current = next;
+  }
+  head = nullptr;
+  tail = nullptr;
+  size = 0;
+}
+
+Node* LinkedList::getHead() const { return head; }
+
+int LinkedList::getLength() const { return size; }
+
+// std::string LinkedList::toString(bool enhanced) const {
+//     std::ostringstream oss;
+//     Node* current = head;
+//     while (current != nullptr) {
+//         oss << *(current->getTile());
+//         if (current->getNext() != nullptr) {
+//             oss << ", ";
+//         }
+//         current = current->getNext();
+//     }
+//     return oss.str();
+// }
+
+// Get the string representation of the linked list of tiles
+std::string LinkedList::toString(bool enhanced) const {
+  std::ostringstream oss;
+  Node* current = head;
+  while (current != nullptr) {
+    if (enhanced) {
+      oss << current->getTile()->toColouredString();
+    } else {
+      oss << *(current->getTile());
     }
-    head = nullptr;
-    tail = nullptr;
-    size = 0;
-}
-
-Node* LinkedList::getHead() const {
-    return head;
-}
-
-int LinkedList::getLength() const {
-    return size;
-}
-
-std::string LinkedList::toString() const {
-    std::ostringstream oss;
-    Node* current = head;
-    while (current != nullptr) {
-        oss << *(current->getTile());
-        if (current->getNext() != nullptr) {
-            oss << ", ";
-        }
-        current = current->getNext();
+    if (current->getNext() != nullptr) {
+      oss << ", ";
     }
-    return oss.str();
+    current = current->getNext();
+  }
+  return oss.str();
 }
 
-bool LinkedList::isEmpty() const {
-    return head == nullptr;
-}
+bool LinkedList::isEmpty() const { return head == nullptr; }
 
 Tile* LinkedList::get(int index) const {
   if (index < 0 || index >= size) {

@@ -1,0 +1,12 @@
+2
+2
+./tests/multi-tile-play/savedGame.txt
+pass
+place O5 at C3
+place O4 at D3
+place O3 at E3
+pass
+place B3 at E4
+pass
+quit
+4
