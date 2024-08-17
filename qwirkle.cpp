@@ -444,7 +444,7 @@ void handleEnhancedPlayerTurn(Player *player, Player *opponent,
           std::cout << "You don't have that tile in your hand." << std::endl;
         }
       } else {
-        std::cout << "Invalid move format. Use 'place <tile> at <position>'."
+        std::cout << "Invalid move format. Use 'place <tile> at <position>', 'replace <tile>', or 'pass'."
                   << std::endl;
       }
     }
